@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  station_id: 
+  line_id: 
+  position: 
+
+two:
+  station_id: 
+  line_id: 
+  position: 
