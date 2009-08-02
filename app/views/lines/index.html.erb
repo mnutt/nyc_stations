@@ -1,0 +1,20 @@
+<h1>Subway Lines</h1>
+
+<p>
+<% @lines.each do |line| -%>
+  <%= link_to line.name, line_path(line) -%> &nbsp;
+<% end -%>
+</p>
+
+<table>
+  <% @lines.each do |line| -%>
+    <tr>
+      <th><%= line.name -%></th>
+      <% line.stations.uniq.each do |station| -%>
+	<% bold = (station.lines.size > 1) ? "font-weight: bold" : "" -%>
+	<td id="<%= station.id -%>" style="border: 1px solid #000; min-width: 300px; <%= bold -%>">
+	  (<%= station.id -%>) <%= station.name -%></td>
+      <% end -%>
+    </tr>
+  <% end -%>
+</table>

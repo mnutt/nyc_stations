@@ -1,0 +1,51 @@
+<h1>Stations</h1>
+
+<p>
+  <input type="checkbox" name="typo" id="typo"> 
+  Correct typo mode -- also rename stops, as well as associating stations
+</p>
+
+<ul>
+<% @stations.each do |station| -%>
+  <li id="<%= station.id -%>" style="margin-bottom: 0.3em;"><%= station.name -%> (
+    <% station.lines.each do |line| -%>
+      <span style="padding: 2px 5px; font-family: sans-serif; border: 1px solid #000; text-transform: uppercase; -moz-border-radius: 10px; background-color: <%= line.color -%>; <%= "color: white;" if line.color != "yellow" -%> -%>"><%= line.name -%></span>
+    <% end -%>
+    )
+    <% positioned_stops = station.stops.select{|stop| stop.position}.size -%>
+    <% if positioned_stops < station.lines.size -%>
+      ( <%= positioned_stops -%> / <%= station.lines.size -%> )
+    <% end -%>
+  </li>
+<% end -%>
+</ul>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('li').click(function() {
+      if($(this).hasClass('selected')) {
+        $(this).removeClass('selected');
+        return false;
+      }
+
+      var from = $('li.selected');
+      if(from.length > 0) {
+        var to = $(this);
+        var typoMode = $('#typo:checked').length > 0;
+        console.log("Typo mode: " +typoMode);
+        to.addClass('selected');
+        console.log("From: "+from.attr('id'));
+        console.log("To: "+to.attr('id'));
+
+        $.post('/stations/combine', {to: to.attr('id'), from: from.attr('id'), typo: typoMode});
+
+        from.fadeOut(1000, function() {
+          $('li.selected').removeClass('selected');
+        });
+      } else {
+        $(this).addClass('selected')
+      }
+      return false;
+    })
+  });
+</script>

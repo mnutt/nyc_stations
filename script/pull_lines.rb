@@ -18,7 +18,7 @@ LINES.each do |page|
   line = Line.find_or_create_by_name(doc.at('table img').attributes['alt'].split(' ').first.downcase)
   puts "Parsing line " + line.name
   
-  table = doc.search('table')[2]
+  table = doc.search('#contentbox table').last
   
   position = 0
   
@@ -32,7 +32,8 @@ LINES.each do |page|
 
     transfer_imgs = station.search('td')[3].search('img')
     transfer_imgs.each do |img|
-      file = File.basename(img.attributes['src'])
+      puts img.to_s
+      file = File.basename(img.attributes['src'] || img.attributes['SRC'])
       line_str = file.split('_')[0]
       always = file.split('_')[1] == "16.gif"
       transfer_line = Line.find_or_create_by_name(line_str.downcase)
