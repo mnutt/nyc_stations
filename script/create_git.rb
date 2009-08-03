@@ -37,7 +37,7 @@ Line.all.each do |line|
   line.stations.each do |station|
     if(station.commit)
       puts "  merging with #{station.commit}"
-      `cd #{GIT_DIR} && git merge #{station.commit}`
+      `cd #{GIT_DIR} && git merge #{station.commit} -m "#{station.name}"`
     else
       puts "  adding #{station.name}"
       output = `cd #{GIT_DIR} && echo "#{station.name}" > #{line.name}_line && git add #{line.name}_line && git commit -m "#{station.name}"`
